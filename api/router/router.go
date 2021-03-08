@@ -1,32 +1,16 @@
 package router
 
 import (
-	"net/http"
+	"online-store/api/router/routes"
 
 	"github.com/gorilla/mux"
 )
 
-var Router = mux.NewRouter()
-
-func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	var message = "Home"
-	w.Write([]byte(message))
+type RouterInit struct {
+	Router *mux.Router
 }
 
-func ProductsHandler(w http.ResponseWriter, r *http.Request) {
-	var message = "Products"
-	w.Write([]byte(message))
-}
-
-func ArticlesHandler(w http.ResponseWriter, r *http.Request) {
-	var message = "Articles"
-	w.Write([]byte(message))
-}
-
-func InitRouter() *mux.Router {
-	Router.HandleFunc("/", HomeHandler)
-	Router.HandleFunc("/products", ProductsHandler)
-	Router.HandleFunc("/articles", ArticlesHandler)
-
-	return Router
+func (r *RouterInit) Init() {
+	r.Router = mux.NewRouter().StrictSlash(true)
+	r.Router = routes.LoadRoute(r.Router)
 }

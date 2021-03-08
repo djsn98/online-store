@@ -1,19 +1,23 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
 	"online-store/api/router"
+	"online-store/api/server"
 )
 
 func main() {
-	router := router.InitRouter()
-	http.Handle("/", router)
+	//Membuat router dan inisialisai router
+	router := router.RouterInit{}
+	router.Init()
 
-	var address = "localhost:9000"
-	fmt.Printf("server started at %s\n", address)
-	err := http.ListenAndServe(address, nil)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
+	//Config
+	host := "localhost:"
+	port := "9000"
+
+	//Membuat server, inisialisasi server, dan memasang router ke server
+	server := server.Server{}
+	server.Init(host+port, router.Router)
+
+	//Menyalakan Server
+	server.Run()
 }
